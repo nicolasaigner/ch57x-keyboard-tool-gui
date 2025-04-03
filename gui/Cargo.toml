@@ -1,0 +1,9 @@
+[package]
+name = "keyboard-gui"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+eframe = "0.31"
+rfd = "0.15"
+ch57x-keyboard-tool = { path = "../cli" }
