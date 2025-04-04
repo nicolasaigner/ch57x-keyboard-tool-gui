@@ -1,6 +1,6 @@
 # CH57x Keyboard GUI
 
-![Last Commit Shields.io](https://img.shields.io/github/last-commit/kriomant/ch57x-keyboard-tool?style=for-the-badge) ![Release Workflow Badge](https://github.com/kriomant/ch57x-keyboard-tool/actions/workflows/release.yml/badge.svg)
+![Last Commit Shields.io](https://img.shields.io/github/last-commit/nicolasaigner/ch57x-keyboard-tool-gui?style=for-the-badge) ![Release Workflow Badge](https://github.com/nicolasaigner/ch57x-keyboard-tool-gui/actions/workflows/release.yml/badge.svg)
 
 
 Este projeto é uma interface gráfica (GUI) complementar para o repositório original [kriomant/ch57x-keyboard-tool](https://github.com/kriomant/ch57x-keyboard-tool).
