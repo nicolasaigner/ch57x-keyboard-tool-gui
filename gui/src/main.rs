@@ -1,7 +1,15 @@
+// Atualização para evitar terminal ao chamar o CLI no Windows
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
+#[cfg(windows)]
+use std::os::windows::process::CommandExt;
+
 use chrono::Local;
 use eframe::{egui, App as EframeApp};
 use serde::{Deserialize, Serialize};
 use std::{fs, process::{Command, Stdio}};
+
+const CREATE_NO_WINDOW: u32 = 0x08000000;
 
 #[derive(Default)]
 pub struct GuiApp {
@@ -175,13 +183,18 @@ fn transpose<T: Clone>(v: &Vec<Vec<T>>) -> Vec<Vec<T>> {
 }
 
 fn run_tool_with_data(command: &str, yaml_content: &str) -> String {
-    let mut child = match Command::new("ch57x-keyboard-tool")
-        .arg(command)
+    let mut cmd = Command::new("ch57x-keyboard-tool");
+    cmd.arg(command)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
+        .stderr(Stdio::piped());
+
+    #[cfg(windows)]
     {
+        cmd.creation_flags(CREATE_NO_WINDOW);
+    }
+
+    let mut child = match cmd.spawn() {
         Ok(c) => c,
         Err(e) => return format!("Erro ao executar o binário: {}", e),
     };

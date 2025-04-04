@@ -8,6 +8,7 @@ keywords = ["teclado", "ch57x", "gui", "egui"]
 categories = ["gui", "hardware-support"]
 homepage = "https://github.com/nicolasaigner/ch57x-keyboard-tool-gui"
 repository = "https://github.com/nicolasaigner/ch57x-keyboard-tool-gui.git"
+build = "build.rs"
 
 [dependencies]
 eframe = "0.31"
@@ -16,4 +17,6 @@ serde = { version = "1.0.219", features = ["derive"] }
 serde_yaml = "0.9.33"
 regex = "1.11.1"
 chrono = "0.4.40"
-#ch57x-keyboard-tool = { path = "../cli" }
+
+[package.metadata.windows]
+subsystem = "windows"
