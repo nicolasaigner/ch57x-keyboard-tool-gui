@@ -9,63 +9,62 @@ on:
       - main
 
 jobs:
-  tag-and-release:
-    name: Criar tag e release
+  tag-release:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.extract_version.outputs.version }}
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Obter versão do pacote
-        id: version
+      - name: Extrair versão do Cargo.toml
+        id: extract_version
         run: |
           VERSION=$(grep '^version =' gui/Cargo.toml | head -n1 | sed -E 's/.*"(.*)".*/\1/')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Criar tag se não existir
+      - name: Criar tag com a versão
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git tag -a "v${{ steps.version.outputs.version }}" -m "Release v${{ steps.version.outputs.version }}"
-          git push origin "v${{ steps.version.outputs.version }}"
-        continue-on-error: true
+          git tag -a "v${{ steps.extract_version.outputs.version }}" -m "Release v${{ steps.extract_version.outputs.version }}"
+          git push origin "v${{ steps.extract_version.outputs.version }}"
 
-      - name: Criar release no GitHub
-        uses: taiki-e/create-gh-release-action@v1
+  create-release:
+    needs: tag-release
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: taiki-e/create-gh-release-action@v1
         with:
-          tag: "v${{ steps.version.outputs.version }}"
           token: ${{ secrets.GITHUB_TOKEN }}
 
   upload-assets:
-    needs: tag-and-release
+    needs: tag-release
+    if: startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
         include:
           - target: x86_64-pc-windows-msvc
             os: windows-latest
-
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Instalar toolchain
-        uses: actions-rs/toolchain@v1
+      - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           override: true
+          target: ${{ matrix.target }}
 
-      - name: Build GUI release
-        run: cargo build --release -p ch57x-keyboard-tool-gui
+      - name: Build GUI
+        run: cargo build --release -p ch57x-keyboard-tool-gui --target ${{ matrix.target }}
 
-      - name: Renomear e mover binário
-        run: |
-          mkdir dist
-          cp target/release/ch57x-keyboard-tool-gui.exe dist/ch57x-keyboard-tool-gui-windows.exe
-
-      - name: Upload binário
-        uses: softprops/action-gh-release@v1
+      - name: Upload GUI binary
+        uses: taiki-e/upload-rust-binary-action@v1
         with:
-          files: dist/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          bin: ch57x-keyboard-tool-gui
+          target: ${{ matrix.target }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          include: example-mapping.yaml
