@@ -1,0 +1,71 @@
+name: Release
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag-and-release:
+    name: Criar tag e release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Obter versão do pacote
+        id: version
+        run: |
+          VERSION=$(grep '^version =' gui/Cargo.toml | head -n1 | sed -E 's/.*"(.*)".*/\1/')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Criar tag se não existir
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git tag -a "v${{ steps.version.outputs.version }}" -m "Release v${{ steps.version.outputs.version }}"
+          git push origin "v${{ steps.version.outputs.version }}"
+        continue-on-error: true
+
+      - name: Criar release no GitHub
+        uses: taiki-e/create-gh-release-action@v1
+        with:
+          tag: "v${{ steps.version.outputs.version }}"
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  upload-assets:
+    needs: tag-and-release
+    strategy:
+      matrix:
+        include:
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Instalar toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Build GUI release
+        run: cargo build --release -p ch57x-keyboard-tool-gui
+
+      - name: Renomear e mover binário
+        run: |
+          mkdir dist
+          cp target/release/ch57x-keyboard-tool-gui.exe dist/ch57x-keyboard-tool-gui-windows.exe
+
+      - name: Upload binário
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
