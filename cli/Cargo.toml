@@ -26,6 +26,6 @@ strum = "0.24"
 strum_macros = "0.24"
 indoc = "1.0"
 
-[[bin]]
-name = "keyboard-gui"
-path = "../gui/src/main.rs"
+#[[bin]]
+#name = "keyboard-gui"
+#path = "../gui/src/main.rs"

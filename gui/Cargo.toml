@@ -1,9 +1,22 @@
 [package]
-name = "keyboard-gui"
+name = "ch57x-keyboard-tool-gui"
 version = "0.1.0"
 edition = "2021"
+description = "Interface gráfica para programar teclados CH57x usando o binário CLI do projeto kriomant/ch57x-keyboard-tool"
+license = "MIT OR Apache-2.0"
+keywords = ["teclado", "ch57x", "gui", "egui"]
+categories = ["gui", "hardware-support"]
+homepage = "https://github.com/nicolasaigner/ch57x-keyboard-tool-gui"
+repository = "https://github.com/nicolasaigner/ch57x-keyboard-tool-gui.git"
+build = "build.rs"
 
 [dependencies]
 eframe = "0.31"
 rfd = "0.15"
-ch57x-keyboard-tool = { path = "../cli" }
+serde = { version = "1.0.219", features = ["derive"] }
+serde_yaml = "0.9.33"
+regex = "1.11.1"
+chrono = "0.4.40"
+
+[package.metadata.windows]
+subsystem = "windows"

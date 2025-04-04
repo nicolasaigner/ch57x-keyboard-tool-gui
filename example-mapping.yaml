@@ -1,81 +1,40 @@
-# Normal keyboard orientation is when
-# buttons are on the left side and knobs are on the right.
-# However, you may want to use the keyboard in another orientation.
-# To avoid remapping button positions in your head, just set it here.
-# Possible values are:
-#   (horizontal)
-#   - 'normal': buttons on the left, knobs on the right
-#   - 'upsidedown': buttons on the right, knobs on the left
-#   (vertical)
-#   - 'clockwise': buttons on the top, knobs on the bottom
-#   - 'counterclockwise': buttons on the bottom, knobs on the top
-orientation: normal
+# Representação visual do teclado:
+#
+#   ┌───┬───┬───┬───┐    ◉ Knob Superior
+#   │ 1 │ 2 │ 3 │ 4 │
+#   ├───┼───┼───┼───┤
+#   │ 5 │ 6 │ 7 │ 8 │
+#   ├───┼───┼───┼───┤
+#   │ 9 │10 │11 │12 │    ◉ Knob Inferior
+#   └───┴───┴───┴───┘
+#
+#  - Knob Superior: Controle de saída de áudio (alt-tab, alt-shift-tab)
+#  - Knob Inferior: Controle de volume e mute do microfone
+#
+# No CMD pode ser feito assim:
+# cmd> .\ch57x-keyboard-tool.exe upload < f13-f24-mapping.yaml
+# No PowerShell pode ser feito assim:
+# PS> Get-Content .\f13-f24-mapping.yaml | .\ch57x-keyboard-tool.exe validate
+# config is valid 👌
+# PS> Get-Content .\f13-f24-mapping.yaml | .\ch57x-keyboard-tool.exe upload
+#
+# Caso dê erro, pode ser necessário instalar o UsbDk_1.0.22_x64.msi
+#
+orientation: normal # Teclado com as teclas para a esquerda e knobs para a direita olhando de frente
 
-# Different keyboard models have different numbers of buttons and knobs.
-# Set it here for proper handling.
-# Count rows and columns with the keyboard in normal orientation (knobs on the right)
-rows: 3
-columns: 4
-knobs: 2
+rows: 3     # 3 linhas de botões
+columns: 4  # 4 colunas de botões
+knobs: 2    # 2 knobs que giram e pressionáveis
 
-# Layers are sets of alternative key mappings.
-# The current layer is changed using a button on the side of the keyboard
-# and displayed with LEDs on top (only for the moment of changing).
-# All keyboards I saw had three layers, but I suppose other variants exist.
 layers:
   - buttons:
-      # Array of buttons.
-      # In horizontal orientations it's `rows` rows `columns` buttons each.
-      # In vertical: `columns` rows `rows` buttons each.
-      # Each entry is either a sequence of 'chords' or a mouse event.
-      # A chord is a combination of one key with optional modifiers,
-      # like 'b', 'ctrl-alt-a' or 'win-rctrl-backspace'.
-      # It can also be just modifiers without a key: 'ctrl-alt'.
-      # You may combine up to 5 chords into a sequence using commas: 'ctrl-v,ctrl-c'.
-      # Arbitrary HID usage codes (decimal) may be given like this: '<101>'.
-      # See https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf (section 10)
-      # for HID usage code list.
-      - ["a", "ctrl-a", "alt-shift", "alt-ctrl,ctrl-b"]
-      - ["e", "f", "g", "h"]
-      - ["<100>", "j", "k", "l"]
+      - ["shift-F13", "shift-F14", "shift-F15", "shift-F16"] # Primeira linha de teclas
+      - ["shift-F17", "shift-F18", "shift-F19", "shift-F20"] # Segunda linha de teclas
+      - ["shift-F21", "shift-F22", "shift-F23", "shift-F24"] # Terceira linha de teclas
     knobs:
-      # Knobs are listed from left to right if horizontal.
-      # Knobs are listed from top to bottom if vertical.
-      # Knobs can be rotated counter-clockwise (ccw) or clockwise (cw)
-      # and pressed down.
-      - ccw: "wheelup"
-        press: "click"
-        cw: "wheeldown"
-      - ccw: "shift-wheelup"
-        press: "shift-click"
-        cw: "shift-wheeldown"
-
-  - buttons:
-      # Mouse events are clicks ('click/lclick', 'rclick', 'mclick') or
-      # wheel events ('wheelup', 'wheeldown') with one optional modifier,
-      # only 'ctrl', 'shift' and 'alt' are supported ('ctrl-wheeldown').
-      # Clicks may combine several buttons, like this: 'click+rclick'.
-      - ["click", "lclick", "rclick", "mclick"]
-      - ["click+rclick", "wheeldown", "shift-wheelup", "ctrl-wheelup"]
-      - ["alt-wheelup", "ctrl-click", "wheelup", "wheelup"]
-    knobs:
-      - ccw: "left"
-        press: "enter"
-        cw: "right"
-      - ccw: "ctrl-left"
-        press: "ctrl-enter"
-        cw: "ctrl-right"
-
-  - buttons:
-      # Multimedia commands are supported but
-      # cannot be mixed with normal keys and modifiers.
-      - ["play", "prev", "next", "mute"]
-      - ["2", "3", "4", "5"]
-      - ["6", "7", "8", "9"]
-    knobs:
-      - ccw: "volumedown"
-        press: "mute"
-        cw: "volumeup"
-      - ccw: "d"
-        press: "e"
-        cw: "f"
+      - ccw: 'rctrl-F13' # Sentido Anti-Horário para diminuir o volume de saída de áudio
+        press: 'rctrl-F14' # Pressionar o knob para mutar e desmutar a saída de áudio
+        cw: 'rctrl-F15' # Sentido Horário para aumentar o volume a saída de áudio
+      - ccw: 'rctrl-F16' # Sentido Anti-Horário para diminuir o volume do microfone
+        press: 'rctrl-F17' # Pressionar o knob para mutar e desmutar o microfone
+        cw: 'rctrl-F18' # Sentido Horário para aumentar o volume do microfone
