@@ -1,4 +1,4 @@
-name: Tag Only
+name: Tag and Release with Binary
 
 permissions:
   contents: write
@@ -28,3 +28,35 @@ jobs:
           git config user.email "github-actions@users.noreply.github.com"
           git tag -a "v${{ steps.extract_version.outputs.version }}" -m "Release v${{ steps.extract_version.outputs.version }}"
           git push origin "v${{ steps.extract_version.outputs.version }}"
+
+  release:
+    needs: tag-release
+    strategy:
+      matrix:
+        include:
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Build GUI
+        run: cargo build --release -p ch57x-keyboard-tool-gui --target ${{ matrix.target }}
+
+      - name: Renomear e preparar binário
+        run: |
+          mkdir release
+          cp target/${{ matrix.target }}/release/ch57x-keyboard-tool-gui.exe release/ch57x-keyboard-tool-gui-windows.exe
+
+      - name: Criar release e subir binário
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release/ch57x-keyboard-tool-gui-windows.exe
+          tag_name: v${{ needs.tag-release.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
