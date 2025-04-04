@@ -6,4 +6,8 @@ edition = "2021"
 [dependencies]
 eframe = "0.31"
 rfd = "0.15"
-ch57x-keyboard-tool = { path = "../cli" }
+serde = { version = "1.0.219", features = ["derive"] }
+serde_yaml = "0.9.33"
+regex = "1.11.1"
+chrono = "0.4.40"
+#ch57x-keyboard-tool = { path = "../cli" }

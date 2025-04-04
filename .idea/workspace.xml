@@ -8,7 +8,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fd78b117-a0a6-4472-bddc-497403eb5e07" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mapping.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example-mapping.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example-mapping.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gui/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/gui/src/main.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,9 +46,11 @@
     "Cargo.Run Chat.executor": "Run",
     "Cargo.Run keyboard-gui.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "develop",
     "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/PROJETOS/ch57x-keyboard-tool",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -51,9 +59,15 @@
     "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
     "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
     "org.rust.first.attach.projects": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\PROJETOS\ch57x-keyboard-tool" />
+    </key>
+  </component>
   <component name="RunManager" selected="Cargo.Run keyboard-gui">
     <configuration name="Run Chat" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
       <option name="command" value="run -p keyboard-gui" />
@@ -143,7 +157,8 @@
       <option name="presentableId" value="Default" />
       <updated>1743718282303</updated>
       <workItem from="1743718283602" duration="925000" />
-      <workItem from="1743719243527" duration="202000" />
+      <workItem from="1743719243527" duration="6435000" />
+      <workItem from="1743725794907" duration="9562000" />
     </task>
     <servers />
   </component>
