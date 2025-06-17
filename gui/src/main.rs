@@ -9,6 +9,7 @@ use eframe::{egui, App as EframeApp};
 use serde::{Deserialize, Serialize};
 use std::{fs, process::{Command, Stdio}};
 
+#[cfg(windows)]
 const CREATE_NO_WINDOW: u32 = 0x08000000;
 
 #[derive(Default)]
@@ -117,6 +118,10 @@ impl EframeApp for GuiApp {
                             ui.label(egui::RichText::new(line).monospace().color(egui::Color32::WHITE));
                         }
                     });
+
+                if ui.add(egui::Button::new("Limpar Log")).clicked() {
+                    self.output_log.clear();
+                }
             });
     }
 }
